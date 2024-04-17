@@ -3,6 +3,7 @@ package com.example.pracsbc;
 
 import com.example.pracsbc.service.Endpoint;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.jena.base.Sys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
