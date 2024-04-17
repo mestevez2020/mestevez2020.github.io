@@ -21,6 +21,7 @@ public class AppController implements ErrorController {
     public String menu() {
         return "home";
     }
+
     @GetMapping("/index")
     public String prueba() {
         service.show();
