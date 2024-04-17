@@ -25,6 +25,7 @@ public class AppController implements ErrorController {
 
     @GetMapping("/index")
     public String prueba() {
+        System.out.println("prueba");
         service.show();
         return "home";
     }
