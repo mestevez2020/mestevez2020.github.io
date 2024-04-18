@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Búsqueda</title>
+    <link rel="stylesheet" href="styles-results.css">
+    <link href="/css/movies.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <div class="counter">Se encontraron <span id="result-count">0</span> películas</div>
+    {{#peliculas}}
+    <div id="search-results">
+        <!-- Ejemplo de coincidencia de película -->
+        <div class="movie">
+            <img src="ruta/a/la/imagen.jpg" alt="Nombre de la película">
+            <div class="movie-info">
+                <h2>{{name}}</h2>
+                <p>Año: {{name}}</p>
+                <p>Género: {{name}}</p>
+                <p>Director: {{name}}</p>
+                <p>Descripción: {{name}}</p>
+            </div>
+        </div>
+        <!-- Fin del ejemplo -->
+    </div>
+    {{/peliculas}}
+</div>
+</body>
+</html>

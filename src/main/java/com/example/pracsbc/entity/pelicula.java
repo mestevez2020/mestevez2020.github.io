@@ -54,5 +54,3 @@ public class pelicula implements Comparable<pelicula> {
 
 
 }
-
-

@@ -6,7 +6,6 @@ import com.example.pracsbc.entity.pelicula;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.jena.base.Sys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -26,19 +25,17 @@ public class AppController implements ErrorController {
 
     @GetMapping("/")
     public String menu() {
-        return "home";
+        return "init";
     }
 
-    @GetMapping("/index")
-    public String prueba(Model model) {
-        List<pelicula> peliculas = Endpoint.peliculas();
-        for(pelicula pel : peliculas){
+    @GetMapping("/movies")
+    public String ObtainMovies(Model model) {
+        List<pelicula> pelicula = Endpoint.peliculas();
+        for(com.example.pracsbc.entity.pelicula pel : pelicula){
             System.out.println(pel.getName());
         }
-
-        model.addAttribute("peliculas", peliculas);
-        //service.show();
-        return "home";
+        model.addAttribute("peliculas", pelicula);
+        return "movies";
     }
 
     @ExceptionHandler
