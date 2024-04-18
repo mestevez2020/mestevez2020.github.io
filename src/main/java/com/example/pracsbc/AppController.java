@@ -2,7 +2,7 @@ package com.example.pracsbc;
 
 
 import com.example.pracsbc.service.Endpoint;
-import com.example.pracsbc.entity.pelicula;
+import com.example.pracsbc.entity.Pelicula;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,8 +30,8 @@ public class AppController implements ErrorController {
 
     @GetMapping("/movies")
     public String ObtainMovies(Model model) {
-        List<pelicula> pelicula = Endpoint.peliculas();
-        for(com.example.pracsbc.entity.pelicula pel : pelicula){
+        List<Pelicula> pelicula = Endpoint.peliculas();
+        for(Pelicula pel : pelicula){
             System.out.println(pel.getName());
         }
         model.addAttribute("peliculas", pelicula);

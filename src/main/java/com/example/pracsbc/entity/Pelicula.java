@@ -2,29 +2,30 @@ package com.example.pracsbc.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class pelicula implements Comparable<pelicula> {
+public class Pelicula implements Comparable<Pelicula> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+    private String genre;
 
 
 
-    public pelicula(){
+    public Pelicula(){
 
     }
-    public pelicula(pelicula pel) {
+    public Pelicula(Pelicula pel) {
         this.id = pel.id;
         this.name = pel.name;
+        this.genre = pel.genre;
     }
-    public pelicula(String nombre) {
+    public Pelicula(String nombre, String genero) {
         this.id = 0;
         this.name = nombre;
+        this.genre = genero;
     }
 
     public long getId() {
@@ -39,8 +40,12 @@ public class pelicula implements Comparable<pelicula> {
         return name;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
     @Override
-    public int compareTo(pelicula pel) {
+    public int compareTo(Pelicula pel) {
         return this.name.compareTo(pel.name);
     }
 
@@ -48,7 +53,7 @@ public class pelicula implements Comparable<pelicula> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        pelicula pel = (pelicula) o;
+        Pelicula pel = (Pelicula) o;
         return Objects.equals(name, pel.name);
     }
 
