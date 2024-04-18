@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -29,12 +30,13 @@ public class AppController implements ErrorController {
     }
 
     @GetMapping("/movies")
-    public String ObtainMovies(Model model) {
-        List<Pelicula> pelicula = Endpoint.peliculas();
+    public String ObtainMovies(Model model, @RequestParam String genre) {
+        List<Pelicula> pelicula = Endpoint.peliculas(genre);
         for(Pelicula pel : pelicula){
             System.out.println(pel.getName());
         }
         model.addAttribute("peliculas", pelicula);
+
         return "movies";
     }
 
