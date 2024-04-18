@@ -36,7 +36,7 @@ public class AppController implements ErrorController {
             System.out.println(pel.getName());
         }
         model.addAttribute("peliculas", pelicula);
-
+        model.addAttribute("num", pelicula.toArray().length);
         return "movies";
     }
 
