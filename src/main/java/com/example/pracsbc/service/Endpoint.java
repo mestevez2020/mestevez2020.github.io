@@ -5,6 +5,11 @@ import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.sparql.exec.http.QueryExecutionHTTP;
+import com.example.pracsbc.entity.pelicula;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class Endpoint {
@@ -73,5 +78,47 @@ public class Endpoint {
             httpQuery.close();
         }
 
+    }
+
+    public static List<pelicula> peliculas(){
+
+        String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+                "PREFIX yago: <http://dbpedia.org/class/yago/>\n" +
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
+                "SELECT DISTINCT ?cap ?nombre\n" +
+                "WHERE {\n" +
+                "  ?cap rdf:type yago:WikicatCapitalsInEurope.\n" +
+                "  ?cap foaf:name ?nombre.\n" +
+                "}\n" +
+                "ORDER BY ?cap";
+
+        // 2. Configurar el endpoint SPARQL
+        String sparqlEndpoint = "https://dbpedia.org/sparql";
+
+        // 3. Configurar la consulta SPARQL
+        Query query = QueryFactory.create(queryString);
+
+
+        List<String> capitales = new ArrayList<>();
+        List<String> nom_capitales =new ArrayList<>();
+        List<pelicula> peliculas = new ArrayList<>();
+        // 4. Configurar QueryExecutionHTTP con el endpoint SPARQL y la consulta
+        try(QueryExecutionHTTP httpQuery = QueryExecutionHTTP.service(sparqlEndpoint, query)) {
+            ResultSet results = httpQuery.execSelect();
+            while (results.hasNext()) {
+                QuerySolution soln = results.nextSolution();
+                String cap = soln.get("cap").toString();
+                String nombre = soln.get("nombre").toString();
+                capitales.add(cap);
+                nom_capitales.add(nombre);
+
+                peliculas.add(new pelicula(nombre));
+
+                System.out.println("Capital: " + cap);
+                System.out.println("Nombre: " + nombre);
+                System.out.println();
+            }
+        }
+        return peliculas;
     }
 }
