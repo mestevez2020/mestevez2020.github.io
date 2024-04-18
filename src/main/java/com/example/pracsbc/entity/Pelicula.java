@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Entity
 public class Pelicula implements Comparable<Pelicula> {
@@ -12,8 +13,8 @@ public class Pelicula implements Comparable<Pelicula> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private ArrayList<String> genre;
-    private ArrayList<String> director;
+    private HashSet<String> genre;
+    private HashSet<String> director;
     private String description;
 
 
@@ -29,16 +30,16 @@ public class Pelicula implements Comparable<Pelicula> {
     public Pelicula(String nombre, String genero) {
         this.id = 0;
         this.name = nombre;
-        this.genre = new ArrayList<>();
+            this.genre = new HashSet<>();
         this.genre.add(genero);
     }
 
     public Pelicula( String nombre, String genre, String director, String description) {
         this.id = 0;
         this.name = nombre;
-        this.genre = new ArrayList<>();
+        this.genre = new HashSet<>();
         this.genre.add(genre);
-        this.director = new ArrayList<>();
+        this.director = new HashSet<>();
         this.director.add(director);
 
         this.description = description;
@@ -62,11 +63,11 @@ public class Pelicula implements Comparable<Pelicula> {
         return name;
     }
 
-    public ArrayList<String> getGenre() {
+    public HashSet<String> getGenre() {
         return genre;
     }
 
-    public ArrayList<String> getDirector() {
+    public HashSet<String> getDirector() {
         return director;
     }
 
