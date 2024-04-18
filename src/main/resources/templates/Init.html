@@ -3,17 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Init</title>
+  <title>Buscador de Películas</title>
   <link href="/css/init.css" rel="stylesheet" />
 </head>
 <body>
 <div class="container">
   <h1>Buscador de Películas</h1>
   <form id="search-form" action="/movies">
-    <input type="text" id="search-input" placeholder="Buscar películas...">
+    <label for="genre-select">Selecciona un género:</label>
+    <select id="genre-select" name="genre">
+      <option value="">Todos los géneros</option>
+      <option value="Accion">Acción</option>
+      <option value="Aventuras">Aventuras</option>
+      <option value="CienciaFiccion">Ciencia Ficción</option>
+      <option value="Comedia">Comedia</option>
+      <option value="NoFiccion">No-Ficción / Documental</option>
+      <option value="Drama">Drama</option>
+      <option value="Fantasia">Fantasía</option>
+      <option value="Musical">Musical</option>
+    </select>
     <button type="submit">Buscar</button>
   </form>
-  <div id="search-results"></div>
 </div>
 </body>
 </html>
