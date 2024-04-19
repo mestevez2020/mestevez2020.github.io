@@ -15,12 +15,14 @@ public class Director implements Comparable<Pelicula> {
     private String name;
     private String fecha;
     private HashSet<String> peliculas;
+    private HashSet<String> actores;
 
     public Director(String name, String fecha, String peli){
         this.name=name;
         this.fecha=fecha;
         peliculas=new HashSet<>();
         peliculas.add(peli);
+        actores= new HashSet<>();
     }
 
     public Director() {
@@ -64,7 +66,9 @@ public class Director implements Comparable<Pelicula> {
     public boolean addPelicula(String desc) {
         return this.peliculas.add(desc);
     }
-
+    public boolean addActor(String desc) {
+        return this.actores.add(desc);
+    }
 
     @Override
     public int compareTo(Pelicula o) {

@@ -112,6 +112,38 @@ public class Endpoint {
             }
 
         }
+
+        //segunda consulta
+        String queryString2 = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
+                "SELECT ?actor\n" +
+                "WHERE {\n" +
+                "  ?pelicula dbo:starring ?actor .\n" +
+                "  ?pelicula dbo:director ?director .\n" +
+                "FILTER (REGEX(?director,\"" + direc + "\",\"i\")).\n" +
+                "}\n" +
+                "GROUP BY ?actor\n" +
+                "HAVING (COUNT(?pelicula) > 1)\n" +
+                "ORDER BY DESC(COUNT(?pelicula))";
+
+
+        // 3. Configurar la consulta SPARQL
+        Query query2 = QueryFactory.create(queryString2);
+
+        try (QueryExecutionHTTP httpQuery = QueryExecutionHTTP.service(sparqlEndpoint, query2)) {
+            ResultSet results = httpQuery.execSelect();
+
+            while (results.hasNext()) {
+                QuerySolution soln = results.nextSolution();
+                String actor = soln.get("actor").toString();
+
+                dic.addActor(actor);
+
+
+            }
+
+        }
+
+
         return dic;
 
 
