@@ -1,4 +1,5 @@
 package com.example.pracsbc.service;
+import com.example.pracsbc.entity.Actor;
 import org.springframework.stereotype.Service;
 import org.apache.jena.query.*;
 import org.apache.jena.sparql.exec.http.QueryExecutionHTTP;
@@ -65,11 +66,6 @@ public class Endpoint {
 
                     }
                 }
-
-
-                System.out.println("titulo: " + titulo);
-                System.out.println("Genero: " + genero);
-                System.out.println();
             }
         }
         return peliculas;
@@ -100,19 +96,16 @@ public class Endpoint {
             ResultSet results = httpQuery.execSelect();
             while (results.hasNext()) {
                 QuerySolution soln = results.nextSolution();
-                String director = soln.get("director").toString();
-                String fechaNacimiento = soln.get("fechaNacimiento").toString();
-                String pelicula = soln.get("pelicula").toString();
+                String director = soln.get("director").toString().substring(soln.get("director").toString().lastIndexOf('/')+1);;
+                String fechaNacimiento = soln.get("fechaNacimiento").toString().substring(1,11);
+                String pelicula = soln.get("pelicula").toString().substring(soln.get("pelicula").toString().lastIndexOf('/')+1);
                 if (dic == null) {
                     dic = new Director(director, fechaNacimiento, pelicula);
                 } else {
                     dic.addPelicula(pelicula);
                 }
-
             }
-
         }
-
         //segunda consulta
         String queryString2 = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
                 "SELECT ?actor\n" +
@@ -124,29 +117,58 @@ public class Endpoint {
                 "GROUP BY ?actor\n" +
                 "HAVING (COUNT(?pelicula) > 1)\n" +
                 "ORDER BY DESC(COUNT(?pelicula))";
-
-
         // 3. Configurar la consulta SPARQL
         Query query2 = QueryFactory.create(queryString2);
-
         try (QueryExecutionHTTP httpQuery = QueryExecutionHTTP.service(sparqlEndpoint, query2)) {
             ResultSet results = httpQuery.execSelect();
 
             while (results.hasNext()) {
                 QuerySolution soln = results.nextSolution();
                 String actor = soln.get("actor").toString();
-
                 dic.addActor(actor);
-
-
             }
-
         }
-
-
         return dic;
-
-
     }
 
+
+    public static Actor informacionActor(String actor) {
+        String queryString = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                "PREFIX dbp: <http://dbpedia.org/property/>\n\n" +
+                "SELECT ?actor ?fechaNaci ?paisNaci ?pelicula\n" +
+                "WHERE {\n" +
+                "    ?actor a dbo:Person ;\n" +
+                "             dbo:birthDate ?fechaNaci ;\n" +
+                "             dbo:birthPlace ?paisNaci.\n"+
+                "    ?pelicula dbo:starring ?actor .\n" +
+                "FILTER (REGEX(?actor,\"" + actor + "\",\"i\")).\n" +
+                "}";
+
+        // 2. Configurar el endpoint SPARQL
+        String sparqlEndpoint = "https://dbpedia.org/sparql";
+
+        // 3. Configurar la consulta SPARQL
+        Query query = QueryFactory.create(queryString);
+
+
+        Actor ac = null;
+        // 4. Configurar QueryExecutionHTTP con el endpoint SPARQL y la consulta
+        try (QueryExecutionHTTP httpQuery = QueryExecutionHTTP.service(sparqlEndpoint, query)) {
+            ResultSet results = httpQuery.execSelect();
+            while (results.hasNext()) {
+                QuerySolution soln = results.nextSolution();
+                String a = soln.get("actor").toString().substring(soln.get("actor").toString().lastIndexOf('/')+1);;
+                String fechaNaci = soln.get("fechaNaci").toString().substring(1,11);
+                String paisNaci = soln.get("paisNaci").toString().substring(soln.get("paisNaci").toString().lastIndexOf('/')+1);;
+                String pelicula= soln.get("pelicula").toString().substring(soln.get("pelicula").toString().lastIndexOf('/')+1);;
+                if (ac == null) {
+                    ac = new Actor(a, fechaNaci, paisNaci);
+                } else {
+                    ac.addPeliculas(new Pelicula(pelicula));
+                }
+            }
+        }
+        return ac;
+    }
 }

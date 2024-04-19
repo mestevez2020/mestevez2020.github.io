@@ -33,6 +33,11 @@ public class Pelicula implements Comparable<Pelicula> {
             this.genre = new HashSet<>();
         this.genre.add(genero);
     }
+    public Pelicula(String nombre) {
+        this.id = 0;
+        this.name = nombre;
+    }
+
 
     public Pelicula( String nombre, String genre, String director, String description) {
         this.id = 0;

@@ -1,6 +1,7 @@
 package com.example.pracsbc;
 
 
+import com.example.pracsbc.entity.Actor;
 import com.example.pracsbc.service.Endpoint;
 import com.example.pracsbc.entity.Pelicula;
 import com.example.pracsbc.entity.Director;
@@ -34,9 +35,6 @@ public class AppController implements ErrorController {
     @GetMapping("/movies")
     public String ObtainMovies(Model model, @RequestParam String genre) {
         List<Pelicula> pelicula = Endpoint.peliculas(genre);
-        for(Pelicula pel : pelicula){
-            System.out.println(pel.getName());
-        }
         model.addAttribute("peliculas", pelicula);
         model.addAttribute("num", pelicula.toArray().length);
         return "movies";
@@ -49,6 +47,15 @@ public class AppController implements ErrorController {
         Director direct = Endpoint.informacionDirector(director);
 
         model.addAttribute("director", direct);
+        return "movies";
+    }
+
+    @PostMapping("/actor")
+    public String InformacionActor(Model model, @RequestParam String actor) {
+        Actor act=Endpoint.informacionActor(actor);
+        model.addAttribute("actor", act);
+        System.out.println("actor:"+actor);
+
         return "movies";
     }
 

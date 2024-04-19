@@ -43,20 +43,44 @@
     </div>
     {{/peliculas}}
     {{#director}}
-    <div id="search-results">
+    <div id="search-result">
         <!-- Ejemplo de coincidencia de película -->
         <div class="movie">
             <img src="ruta/a/la/imagen.jpg" alt="Nombre del director">
             <div class="movie-info">
                 <h2>{{name}}</h2>
-                <p>Año nacimiento: {{fecha}}</p>
-
-                <p>Peliculas: {{peliculas}}</p>
-                <p>Actores que hayan salido es más de una peli: {{actores}}</p>
+                <p><strong>Año nacimiento:</strong> {{fecha}}</p>
+                <p><strong>Peliculas:</strong>{{peliculas}}</p>
+                <p><strong>Actores que hayan salido en más de una peli:</strong></p>
+                {{#actores}}
+                <form action="/actor" method="post" class="custom-form" >
+                    <input type="hidden" name="actor" value="{{.}}">
+                    <button type="submit" style="border: none; background: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">{{.}}</button>
+                </form>
+                {{/actores}}
             </div>
         </div>
     </div>
     {{/director}}
+    {{#actor}}
+    <div id="search-results2">
+        <!-- Ejemplo de coincidencia de película -->
+        <div class="movie">
+            <img src="ruta/a/la/imagen.jpg" alt="Nombre del actor">
+            <div class="movie-info">
+                <h2>{{name}}</h2>
+                <p><strong>Año nacimiento:</strong> {{fechaNaci}}</p>
+                <p><strong>Lugar nacimiento:</strong> {{paisNaci}}</p>
+                <p><strong>Películas:</strong></p>
+                <ul>
+                    {{#peliculas}}
+                    <li>{{name}}</li>
+                    {{/peliculas}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{/actor}}
 </div>
 </body>
 </html>
