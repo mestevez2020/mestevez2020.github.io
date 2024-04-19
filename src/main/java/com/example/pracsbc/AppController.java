@@ -3,6 +3,7 @@ package com.example.pracsbc;
 
 import com.example.pracsbc.service.Endpoint;
 import com.example.pracsbc.entity.Pelicula;
+import com.example.pracsbc.entity.Director;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -39,6 +41,18 @@ public class AppController implements ErrorController {
         model.addAttribute("num", pelicula.toArray().length);
         return "movies";
     }
+
+
+
+    @PostMapping("/informacionDirector")
+    public String InformacionDirectorPost(Model model, @RequestParam String director) {
+        Director direct = Endpoint.informacionDirector(director);
+
+        model.addAttribute("director", direct);
+        return "movies";
+    }
+
+
 
     @ExceptionHandler
     public String handleException(Model model, Exception ex, HttpServletRequest request) {

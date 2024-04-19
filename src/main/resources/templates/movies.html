@@ -9,7 +9,9 @@
 </head>
 <body>
 <div class="container">
-    <div class="counter">Se encontraron <span id="result-count">{{num}}</span> películas</div>
+    {{#num}}
+    <div class="counter">Se encontraron <span id="result-count">{{.}}</span> películas</div>
+    {{/num}}
     {{#peliculas}}
     <div id="search-results">
         <!-- Ejemplo de coincidencia de película -->
@@ -18,14 +20,42 @@
             <div class="movie-info">
                 <h2>{{name}}</h2>
                 <p>Año: {{name}}</p>
+
                 <p>Género: {{genre}}</p>
-                <p>Director: {{director}}</p>
+                <p> Director: </p>
+                {{#director}}
+                <style>
+                    .custom-form {
+                        margin-left: 20px;
+                    }
+                </style>
+
+                <form action="/informacionDirector" method="post" class="custom-form">
+                    <input type="hidden" name="director" value="{{.}}">
+                    <button type="submit" style="border: none; background: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">{{.}}</button>
+                </form>
+                {{/director}}
+                <p> </p>
                 <p>Descripción: {{description}}</p>
             </div>
         </div>
         <!-- Fin del ejemplo -->
     </div>
     {{/peliculas}}
+    {{#director}}
+    <div id="search-results">
+        <!-- Ejemplo de coincidencia de película -->
+        <div class="movie">
+            <img src="ruta/a/la/imagen.jpg" alt="Nombre del director">
+            <div class="movie-info">
+                <h2>{{name}}</h2>
+                <p>Año nacimiento: {{fecha}}</p>
+
+                <p>Peliculas: {{peliculas}}</p>
+            </div>
+        </div>
+    </div>
+    {{/director}}
 </div>
 </body>
 </html>
