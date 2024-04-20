@@ -2,6 +2,7 @@ package com.example.pracsbc;
 
 
 import com.example.pracsbc.entity.Actor;
+import com.example.pracsbc.entity.Ciudad;
 import com.example.pracsbc.service.Endpoint;
 import com.example.pracsbc.entity.Pelicula;
 import com.example.pracsbc.entity.Director;
@@ -39,13 +40,20 @@ public class AppController implements ErrorController {
         model.addAttribute("num", pelicula.toArray().length);
         return "movies";
     }
+    @GetMapping("/moviesByTitle")
+    public String ObtainMoviesBytitle(Model model, @RequestParam String title) {
+        System.out.println(title);
+        List<Pelicula> pelicula = Endpoint.peliculasBytitle(title);
+       model.addAttribute("peliculas", pelicula);
+        model.addAttribute("num", pelicula.toArray().length);
+        return "movies";
+    }
 
 
 
     @PostMapping("/informacionDirector")
     public String InformacionDirectorPost(Model model, @RequestParam String director) {
         Director direct = Endpoint.informacionDirector(director);
-
         model.addAttribute("director", direct);
         return "movies";
     }
@@ -58,8 +66,13 @@ public class AppController implements ErrorController {
 
         return "movies";
     }
-
-
+    @GetMapping("/ciudad")
+    public String Ciudad(Model model, @RequestParam String ciudad) {
+        Ciudad ciu=Endpoint.Ciudad(ciudad);
+        model.addAttribute("ciudad", ciu);
+        model.addAttribute("num", 1);
+        return "movies";
+    }
 
     @ExceptionHandler
     public String handleException(Model model, Exception ex, HttpServletRequest request) {

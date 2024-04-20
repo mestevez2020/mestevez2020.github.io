@@ -63,6 +63,10 @@ public class Director implements Comparable<Pelicula> {
         this.fecha = fecha;
     }
 
+    public HashSet<String> getPeliculas() {
+        return peliculas;
+    }
+
     public boolean addPelicula(String desc) {
         return this.peliculas.add(desc);
     }

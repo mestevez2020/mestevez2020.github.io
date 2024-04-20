@@ -50,7 +50,14 @@
             <div class="movie-info">
                 <h2>{{name}}</h2>
                 <p><strong>Año nacimiento:</strong> {{fecha}}</p>
-                <p><strong>Peliculas:</strong>{{peliculas}}</p>
+                <p><strong>Película:</strong></p>
+                {{#peliculas}}
+                <form action="/moviesByTitle" method="get" class="custom-form" >
+                    <input type="hidden" name="title" value="{{.}}">
+                    <button type="submit" style="border: none; background: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">
+                        {{.}}</button>
+                </form>
+                {{/peliculas}}
                 <p><strong>Actores que hayan salido en más de una peli:</strong></p>
                 {{#actores}}
                 <form action="/actor" method="post" class="custom-form" >
@@ -70,17 +77,37 @@
             <div class="movie-info">
                 <h2>{{name}}</h2>
                 <p><strong>Año nacimiento:</strong> {{fechaNaci}}</p>
-                <p><strong>Lugar nacimiento:</strong> {{paisNaci}}</p>
+                <p><strong>Lugar nacimiento:</strong></p>
+                <form action="/ciudad" method="get" class="custom-form" >
+                    <input type="hidden" name="ciudad" value="{{paisNaci}}">
+                    <button type="submit" style="border: none; background: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">
+                        {{paisNaci}}</button>
+                </form>
                 <p><strong>Películas:</strong></p>
-                <ul>
-                    {{#peliculas}}
-                    <li>{{name}}</li>
-                    {{/peliculas}}
-                </ul>
+                {{#peliculas}}
+                <form action="/moviesByTitle" method="get" class="custom-form" >
+                    <input type="hidden" name="title" value="{{name}}">
+                    <button type="submit" style="border: none; background: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">
+                        {{name}}</button>
+                </form>
+                {{/peliculas}}
             </div>
         </div>
     </div>
     {{/actor}}
+    {{#ciudad}}
+    <div id="search-results3">
+        <!-- Ejemplo de coincidencia de película -->
+        <div class="movie">
+            <img src="ruta/a/la/imagen.jpg" alt="Lugar Nacimiento">
+            <div class="movie-info">
+                <h2>{{nombre}}</h2>
+                <p><strong>Pais:</strong> {{pais}}</p>
+                <p><strong>Terreno:</strong>{{extension}}</p>
+            </div>
+        </div>
+    </div>
+    {{/ciudad}}
 </div>
 </body>
 </html>
