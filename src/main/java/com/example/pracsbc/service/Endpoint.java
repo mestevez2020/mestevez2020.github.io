@@ -1,6 +1,7 @@
 package com.example.pracsbc.service;
 import com.example.pracsbc.entity.Actor;
 import com.example.pracsbc.entity.Ciudad;
+import org.apache.jena.rdf.model.RDFNode;
 import org.springframework.stereotype.Service;
 import org.apache.jena.query.*;
 import org.apache.jena.sparql.exec.http.QueryExecutionHTTP;
@@ -129,8 +130,8 @@ public class Endpoint {
                 "PREFIX dbp: <http://dbpedia.org/property/>\n\n" +
                 "SELECT ?director ?fechaNacimiento ?pelicula ?title\n" +
                 "WHERE {\n" +
-                "    ?director a dbo:Person ;\n" +
-                "             dbo:birthDate ?fechaNacimiento .\n" +
+                "    ?director a dbo:Person .\n" +
+                "    OPTIONAL{ ?director dbo:birthDate ?fechaNacimiento }.\n" +
                 "    ?pelicula dbo:director ?director ;\n" +
                 "              a dbo:Film ;\n" +
                 "              rdfs:label ?title .\n" +
@@ -151,8 +152,12 @@ public class Endpoint {
             while (results.hasNext()) {
                 QuerySolution soln = results.nextSolution();
                 String director = soln.get("director").toString().substring(soln.get("director").toString().lastIndexOf('/')+1);;
-                String fechaNacimiento = soln.get("fechaNacimiento").toString().substring(1,11);
                 String pelicula = soln.get("title").toString().substring(1,soln.get("title").toString().lastIndexOf('\"'));
+                RDFNode fechaNacimientoNode = soln.get("fechaNacimiento");
+
+                String fechaNacimiento = (fechaNacimientoNode != null) ? fechaNacimientoNode.toString() : "Fecha de nacimiento desconocida";
+
+
                 if (dic == null) {
                     dic = new Director(director, fechaNacimiento, pelicula);
                 } else {
@@ -234,9 +239,9 @@ public class Endpoint {
                 "PREFIX dbp: <http://dbpedia.org/property/>\n\n" +
                 "SELECT ?pais ?ciudad ?extension\n" +
                 "WHERE {\n" +
-                "    ?ciudad a dbo:City; \n" +
-                "        dbo:areaTotal ?extension; \n" +
-                "        dbo:country ?pais.\n"  +
+                "    ?ciudad a dbo:City. \n" +
+                "OPTIONAL{    ?ciudad dbo:areaTotal ?extension} . \n" +
+                "OPTIONAL{    ?ciudad dbo:country ?pais }.\n"  +
                 "FILTER (REGEX(?ciudad,\"" + ciu + "\",\"i\")).\n"+
                 "}\n" +
                 "ORDER BY ?ciudad";
@@ -252,8 +257,14 @@ public class Endpoint {
             while (results.hasNext()) {
                 QuerySolution soln = results.nextSolution();
                 String nombre = soln.get("ciudad").toString().substring(soln.get("ciudad").toString().lastIndexOf('/')+1);
-                String pais = soln.get("pais").toString().substring(soln.get("pais").toString().lastIndexOf('/')+1);
-                String extension = soln.get("extension").toString().substring(1,soln.get("extension").toString().lastIndexOf('\"'));
+
+                RDFNode paisNode = soln.get("pais");
+
+                String pais = (paisNode != null) ? paisNode.toString().substring(soln.get("pais").toString().lastIndexOf('/')+1) : "Pais desconocido";
+
+                RDFNode extensionNode = soln.get("extension");
+
+                String extension = (extensionNode != null) ? extensionNode.toString().substring(1,soln.get("extension").toString().lastIndexOf('\"')): "Extension desconocida";
                 ci=new Ciudad(nombre, extension, pais);
             }
 
